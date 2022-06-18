@@ -53,3 +53,21 @@ class PostLoveReact(models.Model):
 
     def str(self):
         return "{} : {}".format(self.user, self.post)
+
+# -----------------------------syllabus--------------------------------------------#
+
+
+class SyllabusModel(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='provider')
+    university = models.CharField(max_length=200)
+    department = models.CharField(max_length=300)
+    session = models.CharField(max_length=100, blank=True, null=True)
+    syllabus = models.FileField(upload_to='syllabuses', blank=False, null=False)
+    created_on = models.DateTimeField(auto_now_add=True)
+    status = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["-created_on"]
+
+    def __str__(self):
+        return f"{self.university}-{self.department}-{self.session}"

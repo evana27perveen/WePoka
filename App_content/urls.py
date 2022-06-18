@@ -9,4 +9,6 @@ urlpatterns = [
     path('new-post/', views.new_post, name='new-post'),
     path('post-listview/', views.post_listview, name='post-listview'),
     path('post-react/<int:pk>/', views.post_react, name='post-react'),
+    path('add-syllabus/', views.add_syllabus, name='add-syllabus'),
+    path('syllabus-listview/', views.syllabus_listview, name='syllabus-listview'),
 ]

@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse
 
 # Create your views here.
-from App_content.models import PodcastModel, PostsModel, PostLoveReact
+from App_content.models import PodcastModel, PostsModel, PostLoveReact, SyllabusModel
 
 
 def new_podcast(request):
@@ -61,3 +61,25 @@ def post_react(request, pk):
         react_model.save()
     return HttpResponseRedirect(reverse('App_content:post-listview'))
 
+
+# -----------------------------syllabus--------------------------------------------#
+
+def add_syllabus(request):
+    if request.method == 'POST':
+        uni = request.POST.get('university')
+        dept = request.POST.get('department')
+        session = request.POST.get('session')
+        syllabus = request.FILES.get('syllabus')
+        syllabus_model = SyllabusModel(user=request.user, university=uni, department=dept, session=session,
+                                       syllabus=syllabus)
+        syllabus_model.save()
+        return HttpResponseRedirect(reverse('App_post:home'))
+    return render(request, 'App_content/add_syllabus.html')
+
+
+def syllabus_listview(request):
+    syllabuses = SyllabusModel.objects.filter(status=True)
+    content = {
+        'syllabuses': syllabuses,
+    }
+    return render(request, 'App_content/syllabus_listview.html', context=content)
