@@ -11,4 +11,6 @@ urlpatterns = [
     path('post-react/<int:pk>/', views.post_react, name='post-react'),
     path('add-syllabus/', views.add_syllabus, name='add-syllabus'),
     path('syllabus-listview/', views.syllabus_listview, name='syllabus-listview'),
+    path('send-request/<int:user_id>/', views.connection_request, name='cennection-request'),
+    path('accept-request/<int:request_id>/', views.accept_connection_request, name='accept-request'),
 ]

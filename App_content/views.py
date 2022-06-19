@@ -1,7 +1,9 @@
+from django.http import HttpResponse
 from django.shortcuts import render, HttpResponseRedirect, reverse
+from django.contrib.auth.models import User
 
 # Create your views here.
-from App_content.models import PodcastModel, PostsModel, PostLoveReact, SyllabusModel
+from App_content.models import PodcastModel, PostsModel, PostLoveReact, SyllabusModel, ConnectionRequestModel
 
 
 def new_podcast(request):
@@ -83,3 +85,26 @@ def syllabus_listview(request):
         'syllabuses': syllabuses,
     }
     return render(request, 'App_content/syllabus_listview.html', context=content)
+
+# -----------------------------------------------connections---------------------------------------- #
+
+
+def connection_request(request, user_id):
+    from_user = request.user
+    to_user = User.objects.get(id=user_id)
+    connect_request, created = ConnectionRequestModel.objects.get_or_create(from_user=from_user, to_user=to_user)
+    if created:
+        return HttpResponse('Connection request sent')
+    else:
+        return HttpResponse('connection request was already sent')
+
+
+def accept_connection_request(request, request_id):
+    connect_request = ConnectionRequestModel.objects.get(id=request_id)
+    if connect_request.to_user == request.user:
+        connect_request.to_user.connections.add(connect_request.from_user)
+        connect_request.from_user.connections.add(connect_request.to_user)
+        connect_request.delete()
+        return HttpResponse('connection request is accepted.')
+    else:
+        return HttpResponse('request is not accepted.')

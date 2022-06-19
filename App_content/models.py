@@ -71,3 +71,17 @@ class SyllabusModel(models.Model):
 
     def __str__(self):
         return f"{self.university}-{self.department}-{self.session}"
+
+
+# -----------------------------end syllabus--------------------------------------------#
+# -------------------------------connections--------------------------------------------#
+
+
+class ConnectionModel(models.Model):
+    connections = models.ManyToManyField(User, blank=True)
+
+
+class ConnectionRequestModel(models.Model):
+    from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='from_user')
+    to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='to_user')
+    created_on = models.DateTimeField(auto_now_add=True)
